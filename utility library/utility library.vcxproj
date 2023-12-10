@@ -131,6 +131,7 @@
     <ClCompile Include="utility library.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\opp1\date library\date library\clsDate.h" />
     <ClInclude Include="clsUtil.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

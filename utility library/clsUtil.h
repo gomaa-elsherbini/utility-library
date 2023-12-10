@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 #include <cstdlib>
+#include "clsDate.h"
+#include "clsString.h"
 using namespace std;
 
 
@@ -10,21 +12,26 @@ using namespace std;
 class clsUtil
 {
 private:
-    static void tableHeader()
+    static enum enAnswer { No = 0, Yes };
+    static enAnswer readAnswer()
     {
-        cout << "\n\n\t\t\tMultiplication table from 1 to 10\t\n\n";
-        cout << "\t";
-        for (int i = 1; i <= 10; i++)
-        {
-            cout << i << "\t";
-        }
-        cout << "\n-----------------------------------------------------------------------------------\n";
+        short int num;
+        cin >> num;
+
+        return (enAnswer)num;
     }
     static string columnSeparator(int i) {
         if (i <= 9)
             return "  |";
         else
             return " |";
+    }
+    static string putCharS(int num)
+    {
+        if (num > 1)
+            return "s";
+        else
+            return "";
     }
     static int getSumAllDivisorsFrom1ToN(int num)
     {
@@ -36,33 +43,12 @@ private:
         }
         return sum;
     }
-    static enum enChar { SmallLetter = 1, CapitalLetter, SpecialChar, DigitInOrder, Mix };
-    static string putCharS(int num)
-    {
-        if (num > 1)
-            return "s";
-        else
-            return "";
-    }
     static int readElementToCheck()
     {
         int element = 0;
         cout << "enter the element to check in the array?\n";
         cin >> element;
         return element;
-    }
-    static enum enAnswer { No = 0, Yes };
-    static enAnswer readAnswer()
-    {
-        short int num;
-        cin >> num;
-
-        return (enAnswer)num;
-    }
-    static void saveNumberInArray(int arr[100], int& length, int num)
-    {
-        length++;
-        arr[length - 1] = num;
     }
     static int readNumber()
     {
@@ -73,8 +59,24 @@ private:
 
         return num;
     }
+    static void saveNumberInArray(int arr[100], int& length, int num)
+    {
+        length++;
+        arr[length - 1] = num;
+    }
+    static void tableHeader()
+    {
+        cout << "\n\n\t\t\tMultiplication table from 1 to 10\t\n\n";
+        cout << "\t";
+        for (int i = 1; i <= 10; i++)
+        {
+            cout << i << "\t";
+        }
+        cout << "\n-----------------------------------------------------------------------------------\n";
+    }
 
 public:
+    static enum enChar { SmallLetter = 1, CapitalLetter, SpecialChar, DigitInOrder, MixChar };
     static void printMultiplicationTableFrom1To10()
     {
         tableHeader();
@@ -343,6 +345,32 @@ public:
 
         return length;
     }
+    static short getLength(int arr[])
+    {
+        short length = 0;
+        short counter = 0;
+
+        while (arr[counter])
+        {
+            length++;
+            counter++;
+        }
+
+        return length;
+    }
+    static short getLength(string arr[])
+    {
+        short length = 0;
+        short counter = 0;
+
+        while (arr[counter] != "")
+        {
+            length++;
+            counter++;
+        }
+
+        return length;
+    }
 
     static string EncryptText(string text)
     {
@@ -394,7 +422,7 @@ public:
             return char(getRandomNumber(33, 47));
         case enChar::DigitInOrder:
             return char(getRandomNumber(48, 57));
-        case enChar::Mix:
+        case enChar::MixChar:
             choice = getRandomNumber(1, 4);
             return getRandomChar(choice);
         }
@@ -468,15 +496,20 @@ public:
         cout << "===============================================\n\n";
     }
 
-    static void formArrayOfNumbers(int numArr[100], int arrLength)
+    static void fillArrayWithRandomNumbers(int numArr[100], int arrLength, int from, int to)
     {
         for (int i = 0; i < arrLength; i++)
-            numArr[i] = getRandomNumber(-10, 10);
+            numArr[i] = getRandomNumber(from, to);
+    }
+    static void fillArrayWithRandomWords(string numArr[100], int arrLength, enChar charCase, int wordLength)
+    {
+        for (int i = 0; i < arrLength; i++)
+            numArr[i] = GenerateWord(charCase, wordLength);
     }
 
     static int MaximumNumberOfArray(int numArr[100], int arrLength)
     {
-        formArrayOfNumbers(numArr, arrLength);
+        //fillArrayWithRandomNumbers(numArr, arrLength, from, to);
         printArrayElements(numArr, arrLength);
 
         int maxNumber = 0;
@@ -490,7 +523,7 @@ public:
 
     static int MinimumNumberOfArray(int numArr[100], int arrLength)
     {
-        formArrayOfNumbers(numArr, arrLength);
+        //fillArrayWithRandomNumbers(numArr, arrLength);
         printArrayElements(numArr, arrLength);
 
         int minNumber = 100;
@@ -505,7 +538,7 @@ public:
 
     static int sumOfArrayElements(int numArr[100], int arrLength)
     {
-        formArrayOfNumbers(numArr, arrLength);
+        //fillArrayWithRandomNumbers(numArr, arrLength);
         printArrayElements(numArr, arrLength);
 
         int sum = 0;
@@ -522,7 +555,7 @@ public:
 
     static void copyArray(int arr1[100], int arr2[100], int arrLength)
     {
-        formArrayOfNumbers(arr1, arrLength);
+        //fillArrayWithRandomNumbers(arr1, arrLength);
 
         for (int i = 0; i < arrLength; i++)
             arr2[i] = arr1[i];
@@ -535,7 +568,7 @@ public:
 
     static void copyPrimeNumbersFromArray(int arr[100], int primeArr[100], int length, int& arr2Length)
     {
-        formArrayOfNumbers(arr, length);
+        //formArrayOfNumbers(arr, length);
 
         int counter = 0;
         for (int i = 0; i < length; i++)
@@ -553,8 +586,8 @@ public:
 
     static void sumTwoArrays(int arr1[100], int arr2[100], int arr3[100], int length)
     {
-        formArrayOfNumbers(arr1, length);
-        formArrayOfNumbers(arr2, length);
+        //formArrayOfNumbers(arr1, length);
+        //formArrayOfNumbers(arr2, length);
 
         for (int i = 0; i < length; i++)
             arr3[i] = arr1[i] + arr2[i];
@@ -564,7 +597,7 @@ public:
         cout << "Array Three Elements \n"; printArrayElements(arr3, length);
     }
 
-    static void swapTwoNumbers(int& num1, int& num2)
+    static void swap(int& num1, int& num2)
     {
         int temp = 0;
 
@@ -572,21 +605,59 @@ public:
         num1 = num2;
         num2 = temp;
     }
-
-    static void shuffleElementsOfArray(int arr[100], int length)
+    static void swap(string& str1, string& str2)
     {
-        formArrayOfNumbers(arr, length);
+        string temp = "";
+
+        temp = str1;
+        str1 = str2;
+        str2 = temp;
+    }
+    static void swap(double& d1, double& d2)
+    {
+        double temp = 0;
+
+        temp = d1;
+        d1 = d2;
+        d2 = temp;
+    }
+    static void swap(clsDate& Date1, clsDate& Date2)    
+    {
+        clsDate temp;
+
+        temp = Date1;
+        Date1 = Date2;
+        Date2 = temp;
+    }
+    
+    static void shufflefArray(int arr[])
+    {
+        //formArrayOfNumbers(arr, length);
+
+        int length = getLength(arr);
         cout << "Array Before Shuffling \n"; printArrayElements(arr, length);
 
         for (int i = 0; i < length; i++)
-            swapTwoNumbers(arr[getRandomNumber(0, (length - 1))], arr[getRandomNumber(0, (length - 1))]);
+            swap(arr[getRandomNumber(0, (length - 1))], arr[getRandomNumber(0, (length - 1))]);
+        
+        cout << "Array After Shuffling \n"; printArrayElements(arr, length);
+    }
+    static void shufflefArray(string arr[])
+    {
+        //formArrayOfNumbers(arr, length);
+
+        int length = getLength(arr);
+        cout << "Array Before Shuffling \n"; printArrayElements(arr, length);
+
+        for (int i = 0; i < length; i++)
+            swap(arr[getRandomNumber(0, (length - 1))], arr[getRandomNumber(0, (length - 1))]);
         
         cout << "Array After Shuffling \n"; printArrayElements(arr, length);
     }
 
     static void copyArrayInReversedOrder(int arr1[100], int arr2[100], int length)
     {
-        formArrayOfNumbers(arr1, length);
+        //formArrayOfNumbers(arr1, length);
         cout << "Original Array \n"; printArrayElements(arr1, length);
 
         int x = 0;
@@ -599,36 +670,58 @@ public:
         cout << "Reversed Array \n"; printArrayElements(arr2, length);
     }
 
-    static string GenerateWord()
+    static string GenerateWord(enChar charCase, short length)
     {
         string Word = "";
-        for (int i = 1; i <= 4; i++)
-            Word += char(getRandomNumber(65, 90));
+        
+        switch (charCase)
+        {
+        case clsUtil::SmallLetter:
+            for (int i = 1; i <= length; i++)
+                Word += getRandomNumber(97, 122);
+            break;
+        case clsUtil::CapitalLetter:
+            for (int i = 1; i <= length; i++)
+                Word += getRandomNumber(65, 90);
+            break;
+        case clsUtil::SpecialChar:
+            for (int i = 1; i <= length; i++)
+                Word += getRandomNumber(33, 47);
+            break;
+        case clsUtil::DigitInOrder:
+            for (int i = 1; i <= length; i++)
+                Word += getRandomNumber(48, 57);
+            break;
+        case clsUtil::MixChar:
+            charCase = enChar(getRandomNumber(1, 4));
+            return GenerateWord(charCase, length);
+            break;
+        }
         return Word;
     }
 
-    static string GenerateKey()
+    static string GenerateKey(enChar charCase)
     {
-        string Key = "";
+        string word = "";
         for (int i = 1; i <= 4; i++)
         {
-            Key += GenerateWord();
-            if (i != 4) Key += "-";
+            word += GenerateWord(charCase, 4);
+            if (i != 4) word += "-";
         }
-        return Key;
+        return word;
     }
 
-    static void GenerateArrayOfKeys(string arr[100], int length)
+    static void GenerateArrayOfKeys(enChar charCase, string arr[100], int length)
     {
         for (int i = 0; i < length; i++)
-            arr[i] = GenerateKey();
+            arr[i] = GenerateKey(charCase);
 
         cout << "Keys Array \n"; printArrayElements(arr, length);
     }
 
     static bool isDigitExistsInArray( int arr[100], short length,  short digit)
     {
-        formArrayOfNumbers(arr, length);
+        //formArrayOfNumbers(arr, length);
 
         printArrayElements(arr, length);
 
@@ -643,7 +736,7 @@ public:
 
     static void getDigitPositionAndOrderInArray(int arr[100], int length, int digit)
     {
-        formArrayOfNumbers(arr, length);
+        //formArrayOfNumbers(arr, length);
         printArrayElements(arr, length);
 
         int posArr[100];
@@ -701,7 +794,7 @@ public:
 
     static void copyArrayWithSaveFunction(int arr1[100], int arr2[100], int length, int length2)
     {
-        formArrayOfNumbers(arr1, length);
+        //formArrayOfNumbers(arr1, length);
         cout << "Array1 elements: ";
         printArrayElements(arr1, length);
 
@@ -715,7 +808,7 @@ public:
 
     static void copyOddElementToNewArray(int arr1[100], int arr2[100], int length, int& length2)
     {
-        formArrayOfNumbers(arr1, length);
+        //formArrayOfNumbers(arr1, length);
         cout << "Array1 elements: ";
         printArrayElements(arr1, length);
 
@@ -740,7 +833,7 @@ public:
 
     static void copyPrimeNumbersToNewArr(int arr1[100], int arr2[100], int length1, int& length2)
     {
-        formArrayOfNumbers(arr1, length1);
+        //formArrayOfNumbers(arr1, length1);
         cout << "Array1 elements: ";
         printArrayElements(arr1, length1);
 
@@ -799,7 +892,7 @@ public:
 
     static int countOddNumbersInArray(int arr[100], int length)
     {
-        formArrayOfNumbers(arr, length);
+        //formArrayOfNumbers(arr, length);
         cout << "Array1 elements: ";
         printArrayElements(arr, length);
 
@@ -814,7 +907,7 @@ public:
 
     static int countEvenNumbersInArray(int arr[100], int length)
     {
-        formArrayOfNumbers(arr, length);
+        //formArrayOfNumbers(arr, length);
         cout << "Array1 elements: ";
         printArrayElements(arr, length);
 
@@ -829,7 +922,7 @@ public:
 
     static int countPositiveNumbersInArray(int arr[100], int length)
     {
-        formArrayOfNumbers(arr, length);
+        //formArrayOfNumbers(arr, length);
         cout << "Array1 elements: ";
         printArrayElements(arr, length);
 
@@ -844,7 +937,7 @@ public:
 
     static int countNegativeNumbersInArray(int arr[100], int length)
     {
-        formArrayOfNumbers(arr, length);
+        //formArrayOfNumbers(arr, length);
         cout << "Array1 elements: ";
         printArrayElements(arr, length);
 
@@ -904,7 +997,15 @@ public:
         return pow(num, 0.5);
     }
 
-
+    static string tap(short space)
+    {
+        string dis = "";
+        for (short i = 1; i <= space; i++)
+        {
+            dis += "\t";
+        }
+        return dis;
+    }
 
 
 
